@@ -22,5 +22,4 @@ data class User(
 
         @ManyToMany
         @Column(name = "books")
-        val books:List<Book> = emptyList()
-)
+        val books:MutableList<Book> = arrayListOf())
