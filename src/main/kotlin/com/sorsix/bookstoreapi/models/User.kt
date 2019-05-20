@@ -21,5 +21,5 @@ data class User(
         val isAdmin: Boolean = false,
 
         @ManyToMany
-        @Column(name = "books")
+        @JoinTable(name = "users_books")
         val books:MutableList<Book> = arrayListOf())

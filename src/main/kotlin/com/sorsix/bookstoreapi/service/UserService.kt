@@ -6,6 +6,7 @@ import com.sorsix.bookstoreapi.repository.BookRepository
 import com.sorsix.bookstoreapi.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.transaction.Transactional
 
 
 @Service
@@ -20,6 +21,8 @@ class UserService(val userRepository: UserRepository,
             Optional.of(userRepository.save(user))
         }
     }
+
+    @Transactional
     fun addBookToUser(id:Long,bookId:Long):Boolean{
        val book =  bookRepository.findById(bookId).orElseThrow{Exception("book not found")}
 
