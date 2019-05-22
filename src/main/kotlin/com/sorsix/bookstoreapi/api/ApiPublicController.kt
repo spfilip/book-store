@@ -7,16 +7,21 @@ import com.sorsix.bookstoreapi.service.AuthorService
 import com.sorsix.bookstoreapi.service.BookService
 import com.sorsix.bookstoreapi.service.GenreService
 import com.sorsix.bookstoreapi.service.UserService
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.nio.file.attribute.GroupPrincipal
+import java.security.Principal
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/api/public")
+@CrossOrigin("*")
 class ApiPublicController(val bookService: BookService,
                           val genreService: GenreService,
                           val authorService: AuthorService,
                           val userService: UserService) {
-
 
     @GetMapping("/author/{name}")
     fun getAuthorsByName(@PathVariable name: String): List<Author> = authorService.getAuthorsByName(name)
@@ -43,7 +48,11 @@ class ApiPublicController(val bookService: BookService,
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody createUserRequest: CreateUserRequest): ResponseEntity<User> {
-        return ResponseEntity.ok(userService.createUser(createUserRequest.username, createUserRequest.password).orElseThrow { Exception("Error creating user") })
+    fun register(@RequestBody createUserRequest: CreateUserRequest): User {
+
+        return userService.createUser(createUserRequest)
     }
+
+    @GetMapping("/login")
+    fun logIn(principal: Principal, response: HttpServletResponse,request: HttpServletRequest):Principal = principal
 }
